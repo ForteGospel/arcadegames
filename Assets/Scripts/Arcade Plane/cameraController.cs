@@ -38,15 +38,6 @@ public class cameraController : MonoBehaviour
         {
             transform.localPosition = offset;
         }
-
-        if (Input.GetKeyDown(KeyCode.LeftShift))
-            offset.z += -10;
-        if (Input.GetKeyDown(KeyCode.LeftControl))
-            offset.z += 10;
-
-        if (Input.GetKeyUp(KeyCode.LeftControl) || Input.GetKeyUp(KeyCode.LeftShift))
-            offset.z = zOffset;
-
         FollowTarget(target);
     }
 
@@ -62,6 +53,24 @@ public class cameraController : MonoBehaviour
         Vector3 localPos = transform.localPosition;
         Vector3 targetLocalPos = t.transform.localPosition;
         transform.localPosition = Vector3.SmoothDamp(localPos, new Vector3(targetLocalPos.x + offset.x, targetLocalPos.y + offset.y, offset.z), ref velocity, smoothTime);
+    }
+
+    public void setCameraBackPosition()
+    {
+        resetCameraPosition();
+        offset.z += -10;
+    }
+
+    public void setCameraFrontPosition()
+    {
+        resetCameraPosition();
+        offset.z += 10;
+    }
+
+    public void resetCameraPosition()
+    {
+
+        offset.z = zOffset;
     }
 
     private void OnDrawGizmos()

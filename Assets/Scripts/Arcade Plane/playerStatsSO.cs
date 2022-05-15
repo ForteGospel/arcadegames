@@ -5,18 +5,20 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Arcade Plane/Player Stats")]
 public class playerStatsSO : ScriptableObject
 {
-
-    int healthPoint, boost, bombs, score;
     [SerializeField]
-    int startingHealth = 100, startingBoost = 100, startingBombs = 3, startingScore = 0;
+    float healthPoint, boost;
 
-    public int HealthPoints
+    [SerializeField]
+    int bombs, score;
+    public int startingHealth = 100, startingBoost = 100, startingBombs = 3, startingScore = 0;
+
+    public float HealthPoints
     {
         get { return healthPoint; }
         set { healthPoint = value; }
     }
 
-    public int Boost
+    public float Boost
     {
         get { return boost; }
         set { boost = value; }
@@ -39,7 +41,7 @@ public class playerStatsSO : ScriptableObject
         startGame();
     }
 
-    void startGame()
+    public void startGame()
     {
         healthPoint = startingHealth;
         boost = startingBoost;

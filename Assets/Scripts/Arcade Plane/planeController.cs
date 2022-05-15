@@ -42,27 +42,41 @@ public class planeController : MonoBehaviour
     [SerializeField]
     LayerMask whatToHit;
 
+    [SerializeField]
+    bool backManuver = false;
+
+    [SerializeField]
+    GameObject pivot;
+
+    [SerializeField]
+    GameObject cameraObject;
+    float manuverTimer;
+
     // Start is called before the first frame update
     void Start()
     {
+        playerStats.startGame();
     }
 
     // Update is called once per frame
     void Update()
     {
+        if(backManuver)
+        {
+            backManuber();
+            return;
+        }
+
         RaycastHit hit;
         float verticalMovement = !Physics.Raycast(transform.position, Vector3.down, out hit, 5, terrain) ? Input.GetAxis("Vertical") : Mathf.Clamp(Input.GetAxis("Vertical"), 0, 1);
         localRotation(verticalMovement);
         localMove(verticalMovement);
         
+        if(playerStats.Boost <= playerStats.startingBoost)
+            playerStats.Boost += (20 * Time.deltaTime);
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            //for (int i = 0; i < 3; i++)
-            //{
-            //    Invoke(nameof(shootMissles), i * 0.2f);
-            //}
-
             shootMissles();
             numOfShoots++;
         }
@@ -101,23 +115,56 @@ public class planeController : MonoBehaviour
 
             charge.Stop();
             time = 0f;
-
             numOfShoots = 0;
         }
 
-        if (Input.GetKeyDown(KeyCode.LeftAlt))
+        if (Input.GetKeyDown(KeyCode.LeftAlt) && playerStats.Boost >= 40)
         {
+            playerStats.Boost -= 40;
             transform.DOLocalRotate(new Vector3(0, 0, 360 * 3), 0.8f, RotateMode.LocalAxisAdd).SetEase(Ease.OutSine);
             spin.Play();
+        }
+
+        if (Input.GetKey(KeyCode.Q) && playerStats.Boost >= 60)
+        {
+            playerStats.Boost -= 60;
+            backManuver = true;
+            cameraObject.GetComponent<cameraController>().setCameraBackPosition();
+            transform.localRotation = Quaternion.EulerAngles(Vector3.zero);
+        }
+
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            cameraObject.GetComponent<cameraController>().setCameraBackPosition();
+            playerStats.Boost -= (50 * Time.deltaTime);
+        }
+            
+        if (Input.GetKeyDown(KeyCode.LeftControl))
+            cameraObject.GetComponent<cameraController>().setCameraFrontPosition();
+
+        if (Input.GetKeyUp(KeyCode.LeftControl) || Input.GetKeyUp(KeyCode.LeftShift))
+            cameraObject.GetComponent<cameraController>().resetCameraPosition();
+    }
+
+    void backManuber()
+    {
+        transform.RotateAround(pivot.transform.position, -transform.right, 180 * Time.deltaTime);
+        cameraObject.transform.LookAt(transform);
+        manuverTimer += Time.deltaTime;
+
+        if (manuverTimer >= 2f)
+        {
+            manuverTimer = 0;
+            backManuver = false;
+            cameraObject.GetComponent<cameraController>().resetCameraPosition();
+            cameraObject.transform.DOLocalRotate(new Vector3(10, 0, 0), 0.5f);
         }
     }
 
     void localMove(float verticalMovement)
     {
-
         float positionY = (transform.localPosition.y + verticalMovement * scopeSpeed * Time.deltaTime);
         float positionX = (transform.localPosition.x + Input.GetAxis("Horizontal") * scopeSpeed * Time.deltaTime);
-
         transform.localPosition = new Vector3(positionX, positionY, transform.localPosition.z);
 
         ClampPosition();
@@ -129,7 +176,6 @@ public class planeController : MonoBehaviour
         pos.x = Mathf.Clamp(pos.x, 0.1f, 0.9f);
         pos.y = Mathf.Clamp(pos.y, 0.1f, 0.9f);
         transform.position = Camera.main.ViewportToWorldPoint(pos);
-
         transform.localPosition = new Vector3(transform.localPosition.x, transform.localPosition.y, 0);
     }
 
@@ -142,7 +188,6 @@ public class planeController : MonoBehaviour
         if (Input.GetAxis("Horizontal") == 0) zRotation = 0;
         else if (Input.GetAxis("Horizontal") > 0) zRotation = -30;
         else zRotation = 30;
-
         Vector3 zZeroRotation = new Vector3(transform.localRotation.eulerAngles.x, transform.localRotation.eulerAngles.y, zRotation);
         transform.localRotation = Quaternion.Lerp(transform.localRotation, Quaternion.Euler(zZeroRotation), rotationSpeed * Time.deltaTime);
     }
