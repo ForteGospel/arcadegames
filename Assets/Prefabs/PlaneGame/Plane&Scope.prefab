@@ -1,5 +1,35 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3664222
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3664223}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3664223
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3664222}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 30, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 6594260995810625149}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3562113617137045569
 GameObject:
   m_ObjectHideFlags: 0
@@ -90,6 +120,7 @@ Transform:
   - {fileID: 6771923592649338004}
   - {fileID: 5919403551881510061}
   - {fileID: 4817318878554516}
+  - {fileID: 3664223}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -635,6 +666,11 @@ PrefabInstance:
       objectReference: {fileID: 5811305046340799682}
     - target: {fileID: 7494215336060361040, guid: 3bfd12b7c38c8a743903570288b84699,
         type: 3}
+      propertyPath: pivot
+      value: 
+      objectReference: {fileID: 3664222}
+    - target: {fileID: 7494215336060361040, guid: 3bfd12b7c38c8a743903570288b84699,
+        type: 3}
       propertyPath: scope
       value: 
       objectReference: {fileID: 5922853789529475777}
@@ -774,25 +810,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 17.772346, y: 2.7158325, z: 14.75741}
   m_Center: {x: 0.0000047683716, y: 1.0164395e-20, z: -0.00000071525574}
---- !u!95 &105282939
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2880606116832734380}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 920479fd155811846877719877ebd706, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 1
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1001 &5923622709473815215
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -7,6 +7,9 @@ public class enemyController : MonoBehaviour
 {
     [SerializeField]
     GameObject honingScope;
+
+    [SerializeField]
+    int health = 3;
     // Start is called before the first frame update
     void Start()
     {
@@ -17,7 +20,8 @@ public class enemyController : MonoBehaviour
     void Update()
     {
         honingScope.transform.LookAt(Camera.main.transform);
-        
+        if (health <= 0)
+            Destroy(gameObject);
     }
 
     public void targetted()
@@ -29,5 +33,10 @@ public class enemyController : MonoBehaviour
     private void OnDestroy()
     {
         DOTween.Kill(transform.gameObject);
+    }
+
+    public void getHit(int damage)
+    {
+        health -= damage;
     }
 }
