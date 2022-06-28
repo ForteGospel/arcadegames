@@ -10,6 +10,9 @@ public class gameController : MonoBehaviour
     public static gameController instance;
 
     [SerializeField]
+    float delaySong = 2f;
+
+    [SerializeField]
     arrowColor currGameColor;
 
     [SerializeField]
@@ -56,7 +59,7 @@ public class gameController : MonoBehaviour
 
     public void startSong()
     {
-        gameObject.GetComponent<AudioSource>().PlayDelayed(2f);
+        gameObject.GetComponent<AudioSource>().PlayDelayed(delaySong);
         Invoke("endSong", gameObject.GetComponent<AudioSource>().clip.length);
     }
 

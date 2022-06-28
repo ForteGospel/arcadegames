@@ -10,8 +10,8 @@ public class noteController : MonoBehaviour
 
     public KeyCode arrow;
 
-    [SerializeField]
-    arrowColor aColor;
+    
+    public arrowColor aColor;
 
     [SerializeField]
     bool isEnabled = false;

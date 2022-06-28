@@ -6,23 +6,27 @@ using DG.Tweening;
 public class TurretController : MonoBehaviour
 {
     [SerializeField]
-    GameObject enemyLaser, point1, point2;
+    GameObject enemyLaser;
+    
+    [SerializeField]
+    GameObject[] attackPoints;
 
     [SerializeField]
     float laserDamage;
 
     [SerializeField]
-    float attackDelay = 3;
+    Vector2 delay = new Vector2(3, 6);
 
     [SerializeField]
     float attackDelayTimer = 0;
+
+    [SerializeField]
+    int numOfAttacks = 1;
 
     GameObject player;
 
     [SerializeField]
     float distanceToActivate;
-
-    Sequence t;
 
     // Start is called before the first frame update
     void Start()
@@ -39,12 +43,12 @@ public class TurretController : MonoBehaviour
             else lookAtRandom();
 
             StartCoroutine(attack());
-            attackDelayTimer = attackDelay;
+            attackDelayTimer = Random.Range(delay.x, delay.y);
         }
         else attackDelayTimer -= Time.deltaTime;
 
         
-        transform.Rotate(0, 0, 10, Space.Self);
+        //transform.Rotate(0, 0, 10, Space.Self);
     }
 
     bool isPlayerClose()
@@ -55,21 +59,25 @@ public class TurretController : MonoBehaviour
     IEnumerator attack()
     {
         yield return new WaitForSeconds(1);
-        Instantiate(enemyLaser, point1.transform.position, transform.rotation);
-        Instantiate(enemyLaser, point2.transform.position, transform.rotation);
-        yield return new WaitForSeconds(0.2f);
-        Instantiate(enemyLaser, point1.transform.position, transform.rotation);
-        Instantiate(enemyLaser, point2.transform.position, transform.rotation);
-        yield return new WaitForSeconds(0.2f);
-        Instantiate(enemyLaser, point1.transform.position, transform.rotation);
-        Instantiate(enemyLaser, point2.transform.position, transform.rotation);
-        yield return new WaitForSeconds(0.2f);
+        for (int i = 0; i < numOfAttacks; i++)
+        {
+            instantiateAttack();
+            yield return new WaitForSeconds(0.2f);
+        }
     }
 
     void lookAtRandom()
     {
         Vector3 randomRot = new Vector3(Random.Range(0, -90), Random.Range(0, 360), transform.rotation.z);
         transform.DOLocalRotate(randomRot, 0.5f).SetRelative();
+    }
+
+    private void instantiateAttack()
+    {
+        if (attackPoints.Length == 0)
+            Instantiate(enemyLaser, transform.position, transform.rotation);
+        foreach (GameObject point in attackPoints)
+            Instantiate(enemyLaser, point.transform.position, transform.rotation);
     }
 
     private void OnDestroy()

@@ -11,6 +11,10 @@ public class TerrainGen : MonoBehaviour
 
     public float  scale = 20f;
 
+    public float octaves;
+    public float persistance;
+    public float lacunarity;
+
     public float offsetX = 20f;
     public float offsetY = 20f;
     public float speed = 5f;
@@ -34,14 +38,14 @@ public class TerrainGen : MonoBehaviour
         terrain = GetComponent<Terrain>();
         offsetX = Random.Range(0f, 10000f);
         offsetY = Random.Range(0f, 10000f);
-        terrain.terrainData = GenerateTerrain();
+        //terrain.terrainData = GenerateTerrain();
         paintMap();
     }
 
     // Update is called once per frame
     void Update()
     {
-        terrain.terrainData = GenerateTerrain();
+        //terrain.terrainData = GenerateTerrain();
         offsetX += speed * Time.deltaTime;
     }
 
@@ -66,7 +70,20 @@ public class TerrainGen : MonoBehaviour
         {
             for (int y = 0; y< height; y++)
             {
-                heights[x, y] = CalculateHeight(x, y);
+                float amplitude = 1;
+                float frequency = 1;
+                float noiseHeight = 0;
+
+                for(int i = 0; i < octaves; i++)
+                {
+                    float perlinValue = Mathf.PerlinNoise(((float)x / width * scale + offsetX) * frequency, ((float)y / width * scale + offsetY) * frequency);
+                    noiseHeight += perlinValue * amplitude;
+
+                    amplitude *= persistance;
+                    frequency *= lacunarity;
+                }
+
+                heights[x, y] = noiseHeight;
             }
 
         }
@@ -96,7 +113,9 @@ public class TerrainGen : MonoBehaviour
 
                 for (int i = 0; i < splatHeights.Length; i++)
                 {
-                    if (terrainHeight >= splatHeights[i].startingHeight)
+                    if (terrainHeight >= splatHeights[i].startingHeight && i + 1 == splatHeights.Length)
+                        splat[i] = 1;
+                    else if (terrainHeight >= splatHeights[i].startingHeight && terrainHeight <= splatHeights[i + 1].startingHeight)
                         splat[i] = 1;
                 }
 

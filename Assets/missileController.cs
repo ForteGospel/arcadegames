@@ -13,6 +13,9 @@ public class missileController : MonoBehaviour
     [SerializeField]
     protected LayerMask whatToCollideWith;
 
+    [SerializeField]
+    protected int damage;
+
     // Start is called before the first frame update
     protected virtual void Start()
     {
@@ -34,7 +37,7 @@ public class missileController : MonoBehaviour
 
         if (isHit)
         {
-            Destroy(hit.transform.gameObject);
+            hit.transform.GetComponent<IDamagable>().getHit(damage);
             Destroy(gameObject);
         }
     }

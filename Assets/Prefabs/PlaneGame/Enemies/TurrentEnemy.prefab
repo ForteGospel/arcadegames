@@ -383,8 +383,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyLaser: {fileID: 5201409103527321541, guid: ad18908dc3f04784b846e916e0544148,
     type: 3}
-  point1: {fileID: 823036990563866002}
-  point2: {fileID: 6041388919053754523}
+  attackPoints:
+  - {fileID: 823036990563866002}
+  - {fileID: 6041388919053754523}
   laserDamage: 20
   attackDelay: 2
   attackDelayTimer: 0

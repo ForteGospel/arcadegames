@@ -16,7 +16,16 @@ public class honingMissleController : missileController
 
     protected override void FixedUpdate()
     {
-        base.FixedUpdate();
+        RaycastHit hit;
+
+        bool isHit = Physics.BoxCast(transform.position - transform.forward * 20, transform.lossyScale, transform.forward, out hit, transform.rotation, 20f, whatToCollideWith);
+
+        if (isHit)
+        {
+            hit.transform.GetComponent<IDamagable>().getHit(damage);
+            hit.transform.GetComponent<enemyController>().hideHoning();
+            Destroy(gameObject);
+        }
     }
 
     protected override void moveTowardsDestination()

@@ -6,6 +6,15 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/MainMenu.unity
+    guid: 5eb60cc24e7baec419ba6958b043413a
+  - enabled: 1
     path: Assets/Scenes/Arcade sona.unity
     guid: 0c8ae46c174027c47a365a3f13138a5a
+  - enabled: 1
+    path: Assets/Scenes/Arcade sona2.unity
+    guid: 87babb61da683d94892de9bd8578aa96
+  - enabled: 1
+    path: Assets/Scenes/Arcade sona3.unity
+    guid: 13373eba30f6dc94b84f8f1455d8c367
   m_configObjects: {}

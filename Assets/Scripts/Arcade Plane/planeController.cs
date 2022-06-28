@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 
-public class planeController : MonoBehaviour
+public class planeController : MonoBehaviour, IDamagable
 {
     [SerializeField]
     playerStatsSO playerStats;
@@ -100,7 +100,7 @@ public class planeController : MonoBehaviour
                 charge.Play();
 
                 RaycastHit honinHit;
-                if (Physics.BoxCast(shoot[2].position, Vector3.one * 2, scope.transform.position - shoot[2].position , out honinHit, shoot[2].rotation, 500f, whatToHit) && honingTransform == null)
+                if (Physics.BoxCast(shoot[2].position, Vector3.one * 5, scope.transform.position - shoot[2].position , out honinHit, shoot[2].rotation, 200f, whatToHit) && honingTransform == null)
                 {
                     honinHit.transform.GetComponent<enemyController>().targetted();
                     honingTransform = honinHit.transform;
@@ -130,7 +130,7 @@ public class planeController : MonoBehaviour
             playerStats.Boost -= 60;
             backManuver = true;
             cameraObject.GetComponent<cameraController>().setCameraBackPosition();
-            transform.localRotation = Quaternion.EulerAngles(Vector3.zero);
+            transform.localRotation = Quaternion.Euler(Vector3.zero);
         }
 
         if (Input.GetKey(KeyCode.LeftShift))
@@ -166,7 +166,7 @@ public class planeController : MonoBehaviour
         float positionY = (transform.localPosition.y + verticalMovement * scopeSpeed * Time.deltaTime);
         float positionX = (transform.localPosition.x + Input.GetAxis("Horizontal") * scopeSpeed * Time.deltaTime);
         transform.localPosition = new Vector3(positionX, positionY, transform.localPosition.z);
-
+        //gameObject.GetComponent<Rigidbody>().MovePosition(transform.position + new Vector3(positionX, positionY, transform.localPosition.z) * scopeSpeed * Time.deltaTime);
         ClampPosition();
     }
 
@@ -207,12 +207,15 @@ public class planeController : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        getHit();
+        Debug.Log("collide!");
+        GetComponent<Rigidbody>().isKinematic = true;
+        GetComponent<Rigidbody>().isKinematic = false;
+        getHit(20);
     }
 
-    void getHit()
+    public void getHit(int damage)
     {
-        playerStats.HealthPoints -= 20;
+        playerStats.HealthPoints -= damage;
     }
 
     private void OnDrawGizmos()

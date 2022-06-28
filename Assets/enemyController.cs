@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 
-public class enemyController : MonoBehaviour
+public class enemyController : MonoBehaviour, IDamagable
 {
     [SerializeField]
     GameObject honingScope;
@@ -13,7 +13,7 @@ public class enemyController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        honingScope.transform.DOScale(8f, 0.5f).SetLoops(-1, LoopType.Yoyo).SetId(transform.gameObject);
+        honingScope.transform.DOScale(honingScope.transform.localScale.x * 1.15f, 0.5f).SetLoops(-1, LoopType.Yoyo).SetId(transform.gameObject);
     }
 
     // Update is called once per frame
@@ -38,5 +38,10 @@ public class enemyController : MonoBehaviour
     public void getHit(int damage)
     {
         health -= damage;
+    }
+
+    public void hideHoning()
+    {
+        honingScope.SetActive(false);
     }
 }
